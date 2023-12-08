@@ -32,14 +32,14 @@ class Connector {
      * @param string $url
      * @param array  $subProtocols
      * @param array  $headers
-     * @return \React\Promise\PromiseInterface
+     * @return \React\Promise\PromiseInterface|\Exception
      */
     public function __invoke($url, array $subProtocols = [], array $headers = []) {
         try {
             $request = $this->generateRequest($url, $subProtocols, $headers);
             $uri = $request->getUri();
         } catch (\Exception $e) {
-            return new RejectedPromise($e);
+            return $e;
         }
         $secure = 'wss' === substr($url, 0, 3);
         $connector = $this->_connector;
